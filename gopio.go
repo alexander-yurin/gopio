@@ -123,23 +123,18 @@ func (pin *Pin) SetValue(value int) error {
 
 func (pin *Pin) GetValue() (error, int) {
 	var err error
-	
+
 	if _, err = os.Stat(gpioPath + "gpio" + pin.id); err != nil {
 		return err, -1
 	}
 
-	var file *os.File
-	if file, err = os.OpenFile(gpioPath+"gpio"+pin.id+"/value", os.O_RDONLY, 0777); err != nil {
-		return err, -1
-	}
-	defer file.Close()
-
-	data := make([]byte, 1)
-	if _, err = file.Read(data); err != nil {
+	data, err := ioutil.ReadFile(gpioPath + "gpio" + pin.id + "/value")
+	if err != nil {
 		return err, -1
 	}
 
 	var res int
+
 	if res, err = strconv.Atoi(strings.TrimSpace(string(data))); err != nil {
 		return err, -1
 	}
