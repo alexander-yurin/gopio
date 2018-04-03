@@ -1,10 +1,11 @@
 package gopio
 
 import (
+	"errors"
+	"io/ioutil"
 	"os"
 	"strconv"
 	"strings"
-	"errors"
 )
 
 type Pin struct {
